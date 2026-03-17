@@ -51,10 +51,10 @@ library ieee;
 entity clock_divider_tb is
 end clock_divider_tb;
 
-architecture test_bench of clock_divider_tb is 	
+ architecture test_bench of clock_divider_tb is 	
   
     component clock_divider is
-        generic ( constant k_DIV : natural := 2	); -- How many clk cycles until slow clock toggles
+        generic ( constant k_DIV : natural := 2); -- How many clk cycles until slow clock toggles
                                                    -- Effectively, you divide the clk double this 
                                                    -- number (e.g., k_DIV := 2 --> clock divider of 4)
         port ( 	i_clk    : in std_logic;

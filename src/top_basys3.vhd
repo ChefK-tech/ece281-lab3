@@ -84,13 +84,43 @@ entity top_basys3 is
 end top_basys3;
 
 architecture top_basys3_arch of top_basys3 is 
-  
-	-- declare components
 
+    --Declare thunderbird component here 
+    component thunderbird_fsm is
+        port (
+            i_clk, i_reset  : in  STD_LOGIC;
+            i_left, i_right : in  STD_LOGIC;
+            o_lights_L      : out STD_LOGIC_VECTOR(2 downto 0);
+            o_lights_R      : out STD_LOGIC_VECTOR(2 downto 0);
+        );
+    end component thunderbird_fsm;
+    
+    component clock_divider is
+        generic ( constant k_DIV : natural := 10000000	);
+        port ( 	i_clk    : in std_logic;		   -- basys3 clk
+                i_reset  : in std_logic;		   -- asynchronous
+                o_clk    : out std_logic		   -- divided (slow) clock
+        );
+    end component clock_divider;
+    
+    signal w_clk : std_logic;		--this wire provides the connection between o_clk and stoplight clk
   
 begin
 	-- PORT MAPS ----------------------------------------
-
+    --Port map thunderbirdt here based on the design provided
+	thunderbird_inst : thunderbird_fsm
+        port map(
+            i_reset => btnR,
+            i_clk   => w_clk,
+            i_right  => sw(0),
+            i_left => sw(15),
+            o_lights_L(2) => led(15),
+            o_lights_L(1) => led(14), 
+            o_lights_L(0) => led(13),
+            o_lights_R(0) => led(2),
+            o_lights_R(1) => led(1),
+            o_lights_R(2) => led(0)
+        );
 	
 	
 	-- CONCURRENT STATEMENTS ----------------------------
@@ -102,5 +132,13 @@ begin
 	-- Alternatively, you can create a different board implementation, 
 	--   or make additional adjustments to the constraints file
 	led(12 downto 3) <= (others => '0');
+	
+	clkdiv_inst : clock_divider 		--instantiation of clock_divider to take 
+        generic map ( k_DIV => 10000000	 ) -- 1 Hz clock to 4Hz clock
+        port map (						  
+            i_clk   => clk,
+            i_reset => btnL,
+            o_clk   => w_clk
+        );    
 	
 end top_basys3_arch;
