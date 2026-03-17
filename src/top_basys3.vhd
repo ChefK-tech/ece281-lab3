@@ -91,7 +91,7 @@ architecture top_basys3_arch of top_basys3 is
             i_clk, i_reset  : in  STD_LOGIC;
             i_left, i_right : in  STD_LOGIC;
             o_lights_L      : out STD_LOGIC_VECTOR(2 downto 0);
-            o_lights_R      : out STD_LOGIC_VECTOR(2 downto 0);
+            o_lights_R      : out STD_LOGIC_VECTOR(2 downto 0)
         );
     end component thunderbird_fsm;
     
